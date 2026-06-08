@@ -1,0 +1,11 @@
+<svg viewBox="0 0 1200 520" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+  <rect width="1200" height="520" fill="#ffffff"/>
+  <path d="M620,0 C750,-20 950,80 1200,60 L1200,520 C1050,480 820,420 650,460 C500,495 380,440 300,380 C500,330 580,200 620,0Z" fill="#AFA9EC" opacity="0.55"/>
+  <path d="M780,0 C900,30 1100,100 1200,150 L1200,520 C1100,500 950,450 850,480 C750,510 700,400 780,0Z" fill="#ED93B1" opacity="0.5"/>
+  <path d="M900,0 L1200,0 L1200,520 C1100,490 980,420 930,360 C900,300 880,100 900,0Z" fill="#EF9F27" opacity="0.55"/>
+  <radialGradient id="soft" cx="60%" cy="50%" r="40%">
+    <stop offset="0%" stop-color="#AFA9EC" stop-opacity="0.5"/>
+    <stop offset="100%" stop-color="#AFA9EC" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="1200" height="520" fill="url(#soft)"/>
+</svg>

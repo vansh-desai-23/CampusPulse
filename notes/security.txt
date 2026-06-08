@@ -1,0 +1,103 @@
+Here is the deep dive into the mechanics of your security layer. We will break this down exactly how the data flows, piece by piece.
+1. The SecurityFilterChain Methods Explained
+
+In SecurityConfig.java, you construct the rules for your application using a builder pattern. Here is exactly what each method in that chain is doing:
+
+    .cors(...): Cross-Origin Resource Sharing. By default, browsers block your React app (running on localhost:3000) from talking to Spring Boot (localhost:8080). This method reads the CORS bean you defined below it to officially allow requests from other origins.
+
+    .csrf(AbstractHttpConfigurer::disable): Cross-Site Request Forgery protection. CSRF attacks rely on stealing browser cookies. Because you are using JWTs stored in localStorage instead of session cookies, you are completely immune to this specific attack. Leaving CSRF enabled would just block your valid requests, so we disable it.
+
+    .sessionManagement(...): Sets the policy to STATELESS. This tells Spring Boot: "Never remember a user between requests. Do not create a session ID." Every single request must prove who it is from scratch using a JWT.
+
+    .authorizeHttpRequests(...): The actual bouncer rules.
+
+        .requestMatchers("/api/auth/").permitAll(): Anyone can access the login and signup routes.
+
+        .anyRequest().authenticated(): Literally any other URL requires a valid ID badge.
+
+    .addFilterBefore(...): This is where you inject your custom JWT logic into Spring's default security architecture. (More on this in section 3).
+
+    .build(): Compiles all these configurations into an active filter chain.
+
+2. token and tokenType in AuthResponse.java
+
+When a user successfully logs in, Spring Boot sends back a JSON response mapped from this class.
+
+    private final String token;: This is the actual, cryptographically signed JWT string (e.g., eyJhbGciOiJIUzI...). It contains the user's role and ID securely baked inside.
+
+    private final String tokenType;: In HTTP standards, when you send a token in an Authorization header, you must specify what kind of token it is. The industry standard for JWTs is "Bearer" (literally meaning "give access to the bearer of this token"). By hardcoding this.tokenType = "Bearer";, you make it explicitly clear to the frontend exactly how to format their Axios interceptor: Authorization: Bearer <token>.
+
+3. Inside JwtAuthenticationFilter.java
+
+This class is the absolute core of your security. It extends OncePerRequestFilter, meaning Spring guarantees this code runs exactly one time for every single HTTP request that hits your server.
+doFilterInternal()
+
+This method intercepts the request before it reaches your controllers.
+
+    Extract the Header: It looks for the Authorization header.
+
+    The Bailout: if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")). If there is no token, it doesn't throw an error. It just calls filterChain.doFilter(request, response) to pass the request along. Because the user isn't authenticated, Spring will automatically block them later if they are trying to access a protected route.
+
+    Extract the Token: It chops off the first 7 characters ("Bearer ") to get the raw JWT string.
+
+    Extract the Roll Number: It asks JwtService to mathematically verify the token and read the roll number inside.
+
+    Check the Context: It checks if SecurityContextHolder is already populated to avoid doing the same work twice.
+
+    Load the User: If the token contains a roll number, it fetches that user from the MySQL database and passes them to authenticateRequest().
+
+authenticateRequest()
+
+If doFilterInternal finds a user, this method actually hands them the keys to the kingdom for this specific request.
+
+    Final Validation: It asks JwtService to check if the token is expired or mathematically tampered with.
+
+    The Authentication Object: It creates a UsernamePasswordAuthenticationToken. (Ignore the name; it is just Spring's standard object for an authenticated user). It populates it with:
+
+        The user's roll number.
+
+        null for the password (because the JWT already proved they entered the correct password previously).
+
+        The user's Role (e.g., ROLE_STUDENT or ROLE_ORGANIZER).
+
+    The Golden Ticket: SecurityContextHolder.getContext().setAuthentication(...). This line officially logs the user in. When the request finally reaches your Controller, Spring looks at this SecurityContextHolder to see if the user is allowed to be there.
+
+4. Where is JwtAuthenticationFilter passed, and why?
+
+Look back at SecurityConfig.java. You inject the filter here:
+Java
+
+.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+
+Why is it passed here?
+Spring Security has a default chain of about 15 invisible filters. One of those default filters is the UsernamePasswordAuthenticationFilter, which is designed to look for an old-school HTML form submission containing a username and password.
+
+By using .addFilterBefore(), you are cutting the line.
+
+You are telling Spring Boot: "Do not bother looking for a username and password form submission. Run my custom JwtAuthenticationFilter first." If your filter finds a valid JWT, it populates the SecurityContextHolder. By the time the request hits Spring's default security filters, Spring sees that the user is already authenticated and lets them pass straight through to the Controller without asking questions.
+
+
+------------------------------------------------------------------------------------------|
+JWT Service
+
+Performance Flex: You are reading the secret string from your application.properties and converting it into a cryptographic SecretKey inside the constructor. This means the heavy lifting of converting the string into byte arrays happens exactly once when the server starts, rather than wasting CPU cycles calculating it on every single login request.
+
+The 256-Bit Rule: Look at buildSigningKey. You explicitly check if (keyBytes.length < 32). The algorithm you chose (HS256) mathematically requires a key that is at least 256 bits (32 characters) long. If you use a weak password like "secret", the jjwt library will throw an error and refuse to start the server.
+
+2. Issuing the Token (generateToken)
+When the AuthService confirms the password is correct, it asks this class to print the badge.
+The "Claims": In JWT architecture, "Claims" is just industry jargon for "pieces of data". By putting the role and the database uid inside the claims, and the Roll Number as the Subject, you are baking the user's identity directly into the token.
+
+The Signature: .signWith(signingKey, SignatureAlgorithm.HS256). This is the most critical line. It takes the JSON data, hashes it using your server's secret master key, and attaches that hash to the end of the token.
+
+A JWT is encoded, not encrypted. Anyone on the internet can take your token, paste it into a decoder, and read {"sub": "IMT2023001", "role": "ORGANIZER"}.
+
+So what stops a 1st-year student from downloading their token, changing "STUDENT" to "ORGANIZER", and sending it back to delete a fest?
+
+When parseClaimsJws(token) runs, Spring Boot takes the incoming payload and runs it through the HS256 algorithm again using your server's secret key.
+
+    If the student changed a single letter in the payload, the resulting mathematical hash will be completely different from the signature attached to the token.
+
+    Spring Boot sees the mismatch, instantly throws a SignatureException, and rejects the request.
+
+This mathematical guarantee is why your platform can confidently handle thousands of concurrent API requests without having to constantly query the MySQL database to verify user roles.

@@ -1,0 +1,63 @@
+1. The Trigger (React API Call)
+
+When the user clicks "Submit" on your frontend form, Axios fires this exact network request:
+
+    API Endpoint: POST http://localhost:8080/api/auth/signup
+
+    Payload (JSON): { "rollNumber": "IMT2023001", "password": "password123", "role": "STUDENT" }
+
+2. The Open Door (Spring Security)
+
+    Class: SecurityConfig
+
+    Rule: .requestMatchers("/api/auth/").permitAll()
+
+    Action: The request bypasses the JwtAuthenticationFilter completely. Spring Security recognizes this as a public endpoint and allows the JSON payload to reach the controller.
+
+3. The Entry Point & Initial Validation
+
+    Class: AuthController
+
+    Method: signup(@Valid @RequestBody SignupRequest request)
+
+    Action: Before executing a single line of your code, Spring intercepts the payload and runs it through the @Valid annotation. It checks the SignupRequest DTO. If rollNumber or password are missing (violating the @NotBlank rules), Spring instantly aborts and throws a 400 Bad Request. If valid, it passes the DTO to the service layer.
+
+4. The Business Logic (The Brains)
+
+    Class: AuthService
+
+    Method: signup(SignupRequest request)
+
+    Action: This method orchestrates the actual creation of the account. It executes the following internal sequence:
+
+        Format Data: Cleans the input: String rollNumber = request.getRollNumber().trim().toUpperCase();
+
+        Duplicate Check: Calls userRepository.existsByRollNumber(rollNumber).
+
+            If true: Throws a 409 Conflict error ("Roll number is already registered").
+
+        Entity Construction: Instantiates a new User object (User user = new User();) and sets the rollNumber and role.
+
+        Password Hashing: Calls passwordEncoder.encode(request.getPassword()). This converts "password123" into a mathematically irreversible Bcrypt hash (e.g., $2a$10$xyz...). This hash is what gets attached to the User object.
+
+        Database Commit: Calls userRepository.save(user) to permanently store the entity.
+
+        Badge Generation: Calls jwtService.generateToken(savedUser) to print the new user's ID badge.
+
+5. The Database Transaction
+
+    Class: UserRepository
+
+    Method: save(User entity)
+
+    Action: Hibernate (Spring Data JPA) intercepts the save command, translates the Java object into a SQL INSERT statement, and executes it against your MySQL database. It then returns the newly created row (which now includes the auto-generated MySQL id).
+
+6. The Response
+
+    Class: AuthController (returning an AuthResponse)
+
+    Action: The controller takes the JWT string, the database ID, and the roll number, packages them into the AuthResponse DTO, and sends it back to React with an HTTP 201 CREATED status code. React catches this, stores the token in localStorage, and redirects the user to the dashboard.
+
+
+
+
