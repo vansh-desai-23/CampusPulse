@@ -6,6 +6,7 @@ export default function FestManagementHub({ festId, onNavigate }) {
   const [fest, setFest] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState('setup');
   
   // Event Modal State
   const [showEventModal, setShowEventModal] = useState(false);
@@ -116,6 +117,21 @@ export default function FestManagementHub({ festId, onNavigate }) {
     }
   };
 
+  const downloadRoster = async (eventId, eventName) => {
+    try {
+      const response = await api.get(`/api/events/${eventId}/roster/export`, { responseType: 'blob' });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${eventName.replace(/\s+/g, '_')}_roster.csv`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    } catch (err) {
+      alert('Failed to download roster.');
+    }
+  };
+
   if (loading) return <div style={{ padding: '40px', textAlign: 'center' }}>Loading Fest Hub...</div>;
   if (error || !fest) return <div style={{ padding: '40px', textAlign: 'center', color: '#ef4444' }}>{error}</div>;
 
@@ -151,7 +167,7 @@ export default function FestManagementHub({ festId, onNavigate }) {
           )}
         </div>
         
-        <div style={{ position: 'absolute', bottom: '30px', left: '40px', display: 'flex', alignItems: 'center', gap: '24px', zIndex: 10 }}>
+        <div style={{ position: 'absolute', bottom: '60px', left: '40px', display: 'flex', alignItems: 'center', gap: '24px', zIndex: 10 }}>
           {fest.logoImageUrl && (
             <img src={fest.logoImageUrl} alt="Logo" style={{ width: '120px', height: '120px', borderRadius: '20px', border: '4px solid rgba(255,255,255,0.2)', background: '#fff', objectFit: 'cover', boxShadow: '0 8px 24px rgba(0,0,0,0.3)' }} />
           )}
@@ -164,12 +180,30 @@ export default function FestManagementHub({ festId, onNavigate }) {
             </div>
           </div>
         </div>
+
+        {/* Tab Navigation */}
+        <div style={{ position: 'absolute', bottom: 0, left: '40px', display: 'flex', gap: '32px' }}>
+          <button 
+            onClick={() => setActiveTab('setup')}
+            style={{ background: 'none', border: 'none', borderBottom: activeTab === 'setup' ? '3px solid #534AB7' : '3px solid transparent', padding: '0 0 12px 0', color: activeTab === 'setup' ? '#fff' : '#cbd5e1', fontSize: '16px', fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s' }}
+          >
+            Fest Setup
+          </button>
+          <button 
+            onClick={() => setActiveTab('ops')}
+            style={{ background: 'none', border: 'none', borderBottom: activeTab === 'ops' ? '3px solid #534AB7' : '3px solid transparent', padding: '0 0 12px 0', color: activeTab === 'ops' ? '#fff' : '#cbd5e1', fontSize: '16px', fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s' }}
+          >
+            On-Ground Ops
+          </button>
+        </div>
       </header>
 
       <main style={{ maxWidth: '1000px', margin: '40px auto 0', padding: '0 40px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-          <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#1e293b', margin: 0 }}>Events</h2>
-          <button 
+        {activeTab === 'setup' ? (
+          <>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+              <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#1e293b', margin: 0 }}>Events</h2>
+              <button 
             className="cp-button" 
             onClick={openEventModal} 
             style={{ width: 'auto', padding: '10px 20px', background: '#fff', color: '#534AB7', border: '2px solid #e0e7ff', boxShadow: '0 4px 6px rgba(83,74,183,0.05)', display: 'flex', alignItems: 'center', gap: '8px', transition: 'all 0.2s', borderRadius: '10px' }}
@@ -202,6 +236,67 @@ export default function FestManagementHub({ festId, onNavigate }) {
               </div>
             ))}
           </div>
+        )}
+          </>
+        ) : (
+          <>
+            <div style={{ marginBottom: '24px' }}>
+              <h2 style={{ fontSize: '24px', fontWeight: 800, color: '#1e293b', margin: '0 0 8px' }}>Access Control & Logistics</h2>
+              <p style={{ color: '#64748b', margin: 0 }}>Manage rosters and cross-reference secure QR tokens at the venue.</p>
+            </div>
+
+            {fest.events.length === 0 ? (
+              <div style={{ background: '#fff', padding: '60px', textAlign: 'center', borderRadius: '16px', border: '1px dashed #cbd5e1' }}>
+                <p style={{ color: '#64748b', fontSize: '16px', margin: 0 }}>No events available for logistics.</p>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                {fest.events.map(ev => {
+                  const regEnd = new Date(ev.registrationEnd);
+                  const isClosed = new Date() > regEnd;
+                  
+                  return (
+                    <div key={ev.id} style={{ background: '#fff', border: '1px solid #e2e8f0', borderRadius: '16px', padding: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <h3 style={{ margin: '0 0 8px', fontSize: '20px', color: '#1e293b', fontWeight: 800 }}>{ev.name}</h3>
+                        <div style={{ display: 'flex', gap: '16px', color: '#64748b', fontSize: '14px', marginBottom: '12px' }}>
+                          <span>Venue: {ev.venue}</span>
+                          <span>•</span>
+                          <span>Max Capacity: {ev.maxCapacity}</span>
+                        </div>
+                        
+                        {isClosed ? (
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#fef2f2', color: '#dc2626', padding: '4px 10px', borderRadius: '8px', fontSize: '12px', fontWeight: 700 }}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0110 0v4"></path></svg> Roster Locked
+                          </span>
+                        ) : (
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#f0fdf4', color: '#16a34a', padding: '4px 10px', borderRadius: '8px', fontSize: '12px', fontWeight: 700 }}>
+                            <span style={{ width: '8px', height: '8px', background: '#16a34a', borderRadius: '50%', display: 'inline-block' }}></span> Registration Open
+                          </span>
+                        )}
+                      </div>
+                      
+                      <div>
+                        <button 
+                          disabled={!isClosed}
+                          onClick={() => downloadRoster(ev.id, ev.name)}
+                          title={!isClosed ? "Roster locks and exports unlock when registration closes." : "Download Access CSV"}
+                          style={{
+                            background: isClosed ? '#1e293b' : '#f1f5f9', color: isClosed ? '#fff' : '#94a3b8',
+                            border: 'none', padding: '12px 24px', borderRadius: '10px', fontWeight: 700, cursor: isClosed ? 'pointer' : 'not-allowed',
+                            display: 'flex', alignItems: 'center', gap: '8px', boxShadow: isClosed ? '0 4px 12px rgba(0,0,0,0.1)' : 'none', transition: 'all 0.2s'
+                          }}
+                        >
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                          Export CSV
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </>
         )}
       </main>
 

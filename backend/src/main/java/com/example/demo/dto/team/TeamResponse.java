@@ -155,6 +155,7 @@ public class TeamResponse {
         private String name;
         private String email;
         private TeamMemberStatus status;
+        private String qrToken;
 
         public Long getUserId() {
             return userId;
@@ -186,6 +187,14 @@ public class TeamResponse {
 
         public void setStatus(TeamMemberStatus status) {
             this.status = status;
+        }
+
+        public String getQrToken() {
+            return qrToken;
+        }
+
+        public void setQrToken(String qrToken) {
+            this.qrToken = qrToken;
         }
     }
 }

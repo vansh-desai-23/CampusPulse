@@ -59,7 +59,7 @@ export default function AllFestsPage({ onNavigate }) {
             filteredFests.length === 0 ? <p className="empty-copy">No fests found for this category.</p> : (
               filteredFests.map((fest) => (
                 <article className="fest-card" key={fest.id} onClick={() => onNavigate('fest-details', fest.id)}>
-                  <div className="fest-banner" style={{ backgroundImage: `url(${fest.bannerImageUrl})` }}>
+                  <div className="fest-banner" style={{ backgroundImage: `url(${fest.bannerImageUrl || '/assets/default-fest.png'})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
                     <span>{fest.type}</span>
                   </div>
                   <div className="fest-body">

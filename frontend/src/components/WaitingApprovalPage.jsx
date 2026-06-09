@@ -27,7 +27,7 @@ export default function WaitingApprovalPage({ onNavigate }) {
           <button 
             className="cp-button" 
             onClick={() => onNavigate('landing')}
-            style={{ width: 'auto', padding: '10px 24px', fontSize: '14px' }}
+            style={{ width: 'auto', padding: '10px 24px', fontSize: '14px', margin: '0 auto', display: 'inline-block', textAlign: 'center' }}
           >
             Return to Home
           </button>

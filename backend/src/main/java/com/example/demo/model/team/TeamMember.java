@@ -33,6 +33,9 @@ public class TeamMember {
     @Column(nullable = false)
     private TeamMemberStatus status = TeamMemberStatus.CONFIRMED;
 
+    @Column(name = "qr_token")
+    private String qrToken;
+
     public Long getId() {
         return id;
     }
@@ -63,5 +66,13 @@ public class TeamMember {
 
     public void setStatus(TeamMemberStatus status) {
         this.status = status;
+    }
+
+    public String getQrToken() {
+        return qrToken;
+    }
+
+    public void setQrToken(String qrToken) {
+        this.qrToken = qrToken;
     }
 }

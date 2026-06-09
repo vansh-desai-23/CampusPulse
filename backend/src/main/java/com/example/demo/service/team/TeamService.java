@@ -289,6 +289,7 @@ public class TeamService {
             view.setName(member.getUser().getName());
             view.setEmail(member.getUser().getEmail());
             view.setStatus(member.getStatus());
+            view.setQrToken(member.getQrToken());
             return view;
         }).toList());
         return response;

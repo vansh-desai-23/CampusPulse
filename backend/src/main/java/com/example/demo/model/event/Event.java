@@ -56,6 +56,9 @@ public class Event {
     @Column(nullable = false)
     private LocalDateTime physicalEventEnd;
 
+    @Column(nullable = false)
+    private boolean ticketsGenerated = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fest_id", nullable = false)
     private Fest fest;
@@ -162,6 +165,14 @@ public class Event {
 
     public void setPhysicalEventEnd(LocalDateTime physicalEventEnd) {
         this.physicalEventEnd = physicalEventEnd;
+    }
+
+    public boolean isTicketsGenerated() {
+        return ticketsGenerated;
+    }
+
+    public void setTicketsGenerated(boolean ticketsGenerated) {
+        this.ticketsGenerated = ticketsGenerated;
     }
 
     public Fest getFest() {

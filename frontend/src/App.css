@@ -680,11 +680,11 @@
 }
 
 .fest-card:nth-child(2n) .fest-banner {
-  background: #f6edf0;
+  background-color: #f6edf0;
 }
 
 .fest-card:nth-child(3n) .fest-banner {
-  background: #f6f1e7;
+  background-color: #f6f1e7;
 }
 
 .fest-banner span {

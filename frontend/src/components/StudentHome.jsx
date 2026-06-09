@@ -102,7 +102,13 @@ export default function StudentHome({ auth, onNavigate, onLogout }) {
             </button>
           ))}
         </div>
-        <button className="invite-button" onClick={() => onNavigate('invite-code')} style={{ marginLeft: 0 }}>Use invite code</button>
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+          <button className="cp-button" onClick={() => onNavigate('student-wallet')} style={{ background: '#0f172a', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> 
+            Wallet
+          </button>
+          <button className="invite-button" onClick={() => onNavigate('invite-code')} style={{ marginLeft: 0 }}>Use invite code</button>
+        </div>
       </header>
 
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
@@ -158,7 +164,7 @@ export default function StudentHome({ auth, onNavigate, onLogout }) {
               {isLoading ? Array(4).fill(0).map((_, i) => <div key={i} className="fest-card loading" />) : (
                 visibleFests.map((fest) => (
                   <article className="fest-card" key={fest.id} onClick={() => onNavigate('fest-details', fest.id)}>
-                    <div className="fest-banner" style={{ backgroundImage: `url(${fest.bannerImageUrl || '/assets/default-fest.png'})` }}>
+                    <div className="fest-banner" style={{ backgroundImage: `url(${fest.bannerImageUrl || '/assets/default-fest.png'})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
                       <span>{formatFestType(fest.type)}</span>
                     </div>
                     <div className="fest-body">

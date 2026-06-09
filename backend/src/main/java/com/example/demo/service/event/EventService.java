@@ -11,11 +11,15 @@ import com.example.demo.model.fest.FestStatus;
 import com.example.demo.repository.event.EventRepository;
 import com.example.demo.repository.fest.FestRepository;
 import com.example.demo.repository.team.TeamMemberRepository;
+import com.example.demo.model.team.TeamMember;
+import com.example.demo.repository.team.TeamMemberRepository;
 import com.example.demo.repository.team.TeamRepository;
 import com.example.demo.service.security.CurrentUserService;
+import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Locale;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -143,6 +147,36 @@ public class EventService {
         event.setPhysicalEventEnd(physicalEnd);
 
         return toResponse(event);
+    }
+
+    @Transactional(readOnly = true)
+    public byte[] exportRoster(Long eventId) {
+        User currentUser = requireOrganizer();
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
+        requireOwnership(currentUser, event.getFest());
+
+        if (event.getRegistrationEnd().isAfter(LocalDateTime.now())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Registration has not closed yet. Roster export is locked.");
+        }
+
+        List<TeamMember> members = teamMemberRepository.findAllByTeam_Event_IdOrderByIdAsc(eventId);
+
+        try (StringWriter sw = new StringWriter();
+             CSVPrinter printer = new CSVPrinter(sw, CSVFormat.DEFAULT.builder().setHeader("Team Name", "Student Name", "Email", "QR_Token", "Status").build())) {
+            for (TeamMember member : members) {
+                printer.printRecord(
+                    member.getTeam().getTeamName(),
+                    member.getUser().getName(),
+                    member.getUser().getEmail(),
+                    member.getQrToken() != null ? member.getQrToken() : "PENDING_GENERATION",
+                    member.getStatus().name()
+                );
+            }
+            return sw.toString().getBytes("UTF-8");
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error generating CSV");
+        }
     }
 
     @Transactional(readOnly = true)

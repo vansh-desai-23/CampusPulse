@@ -18,6 +18,7 @@ import SuperAdminDashboard from './components/SuperAdminDashboard';
 import OrganizerDashboard from './components/OrganizerDashboard';
 import FestCreatePage from './components/FestCreatePage';
 import FestManagementHub from './components/FestManagementHub';
+import StudentWallet from './components/StudentWallet';
 
 const initialAuthState = {
   name: '',
@@ -234,6 +235,7 @@ export default function App() {
         {view === 'invite-code' && <InviteCodePage onNavigate={navigate} />}
         {view === 'view-all-registered' && <RegisteredPage onNavigate={navigate} />}
         {view === 'registration-details' && <RegistrationDetailsPage teamId={selectedId} onNavigate={navigate} />}
+        {view === 'student-wallet' && <StudentWallet auth={auth} onNavigate={navigate} />}
         {view === 'waiting-approval' && <WaitingApprovalPage onNavigate={navigate} />}
         {view === 'super-admin' && <SuperAdminDashboard auth={auth} onNavigate={navigate} onLogout={logout} />}
         {view === 'organizer-dashboard' && <OrganizerDashboard auth={auth} onNavigate={navigate} onLogout={logout} />}
