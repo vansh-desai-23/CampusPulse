@@ -137,6 +137,50 @@ public class TeamService {
                 .toList();
     }
 
+    @Transactional
+    public void leaveTeam(Long teamId) {
+        currentUserService.requireRole(UserRole.STUDENT);
+        User currentUser = currentUserService.getCurrentUser();
+        Team team = teamRepository.findByIdForUpdate(teamId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Team not found"));
+        Event event = eventRepository.findByIdForUpdate(team.getEvent().getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
+
+        // Only allowed before registration end time
+        LocalDateTime now = LocalDateTime.now(clock.withZone(ZoneOffset.UTC));
+        if (!now.isBefore(event.getRegistrationEnd())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot unregister after registration has closed");
+        }
+
+        TeamMember member = teamMemberRepository.findByUser_IdAndTeam_Id(currentUser.getId(), teamId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "You are not a member of this team"));
+
+        List<TeamMember> allMembers = teamMemberRepository.findAllByTeam_IdOrderByIdAsc(teamId);
+        
+        if (allMembers.size() > 1) {
+            // Team remains
+            teamMemberRepository.delete(member);
+            
+            // If the user was the leader, reassign leadership
+            if (team.getLeader().getId().equals(currentUser.getId())) {
+                TeamMember nextLeader = allMembers.stream()
+                        .filter(m -> !m.getUser().getId().equals(currentUser.getId()))
+                        .findFirst()
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "No one to promote to leader"));
+                team.setLeader(nextLeader.getUser());
+                teamRepository.save(team);
+            }
+        } else {
+            // User is the last person, team dissolves
+            teamMemberRepository.delete(member);
+            teamRepository.delete(team);
+            
+            // Update booking count
+            event.setCurrentBookings(Math.max(0, event.getCurrentBookings() - 1));
+            eventRepository.save(event);
+        }
+    }
+
     private void validateBookingEligibility(Event event, User currentUser) {
         if (event.getFest() == null || event.getFest().getStatus() != FestStatus.PUBLISHED) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bookings are not open for this event");
@@ -238,6 +282,7 @@ public class TeamService {
         response.setMaxTeamSize(team.getEvent().getMaxTeamSize());
         response.setEventCurrentBookings(team.getEvent().getCurrentBookings());
         response.setEventMaxCapacity(team.getEvent().getMaxCapacity());
+        response.setRegistrationEnd(team.getEvent().getRegistrationEnd());
         response.setMembers(members.stream().map(member -> {
             TeamMemberView view = new TeamMemberView();
             view.setUserId(member.getUser().getId());

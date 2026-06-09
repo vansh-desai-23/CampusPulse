@@ -55,4 +55,11 @@ public class TeamController {
     public ResponseEntity<List<TeamResponse>> listTeamsByEvent(@PathVariable Long eventId) {
         return ResponseEntity.ok(teamService.listTeamsByEvent(eventId));
     }
+
+    @PostMapping("/teams/{teamId}/leave")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ResponseEntity<Void> leaveTeam(@PathVariable Long teamId) {
+        teamService.leaveTeam(teamId);
+        return ResponseEntity.noContent().build();
+    }
 }

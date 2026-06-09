@@ -19,6 +19,7 @@ public class TeamResponse {
     private int maxTeamSize;
     private int eventCurrentBookings;
     private int eventMaxCapacity;
+    private java.time.LocalDateTime registrationEnd;
     private List<TeamMemberView> members;
 
     public Long getId() {
@@ -131,6 +132,14 @@ public class TeamResponse {
 
     public void setEventMaxCapacity(int eventMaxCapacity) {
         this.eventMaxCapacity = eventMaxCapacity;
+    }
+
+    public java.time.LocalDateTime getRegistrationEnd() {
+        return registrationEnd;
+    }
+
+    public void setRegistrationEnd(java.time.LocalDateTime registrationEnd) {
+        this.registrationEnd = registrationEnd;
     }
 
     public List<TeamMemberView> getMembers() {

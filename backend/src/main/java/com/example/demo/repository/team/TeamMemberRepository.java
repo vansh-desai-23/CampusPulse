@@ -13,4 +13,6 @@ public interface TeamMemberRepository extends JpaRepository<TeamMember, Long> {
     List<TeamMember> findAllByTeam_IdOrderByIdAsc(Long teamId);
 
     List<TeamMember> findAllByUser_IdOrderByIdDesc(Long userId);
+
+    java.util.Optional<TeamMember> findByUser_IdAndTeam_Id(Long userId, Long teamId);
 }
