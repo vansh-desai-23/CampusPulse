@@ -9,6 +9,8 @@ function formatDate(value) {
 export default function RegisteredPage({ onNavigate }) {
   const [registrations, setRegistrations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [teamToUnregister, setTeamToUnregister] = useState(null);
 
   useEffect(() => {
     fetchRegistrations();
@@ -18,7 +20,15 @@ export default function RegisteredPage({ onNavigate }) {
     setIsLoading(true);
     try {
       const response = await api.get('/api/teams/my');
-      setRegistrations(response.data || []);
+      const uniqueRegs = [];
+      const seen = new Set();
+      for (const r of response.data || []) {
+        if (!seen.has(r.eventId)) {
+          seen.add(r.eventId);
+          uniqueRegs.push(r);
+        }
+      }
+      setRegistrations(uniqueRegs);
     } catch (err) {
       console.error(err);
     } finally {
@@ -26,29 +36,47 @@ export default function RegisteredPage({ onNavigate }) {
     }
   }
 
-  async function handleUnregister(teamId, registrationEnd) {
+  const handleUnregisterClick = (reg, e) => {
+    e.stopPropagation();
     const now = new Date();
-    const deadline = new Date(registrationEnd);
-    
+    const deadline = new Date(reg.registrationEnd);
     if (now >= deadline) {
       alert("Cannot unregister. The registration window for this event has closed.");
       return;
     }
+    setTeamToUnregister(reg);
+    setShowModal(true);
+  };
 
-    if (!window.confirm("Are you sure you want to unregister from this event?")) {
-      return;
-    }
-
+  const confirmUnregister = async () => {
+    if (!teamToUnregister) return;
     try {
-      await api.post(`/api/teams/${teamId}/leave`);
+      await api.post(`/api/teams/${teamToUnregister.id}/leave`);
+      setShowModal(false);
+      setTeamToUnregister(null);
       fetchRegistrations();
     } catch (err) {
       alert(err.response?.data?.message || "Failed to unregister.");
     }
-  }
+  };
 
   return (
     <div className="cp-page">
+      {showModal && teamToUnregister && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Unregister from Event</h2>
+            <p>Are you sure you want to unregister from <strong>{teamToUnregister.eventName}</strong>?</p>
+            <div className="modal-actions">
+              <button className="modal-cancel" onClick={() => setShowModal(false)}>Cancel</button>
+              <button className="modal-confirm" onClick={confirmUnregister} style={{ background: '#ef4444' }}>
+                Yes, Unregister
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <header className="cp-header">
         <button className="cp-brand-btn" onClick={() => onNavigate('student')}>CampusPulse</button>
         <span className="header-separator">/</span>
@@ -63,20 +91,20 @@ export default function RegisteredPage({ onNavigate }) {
               registrations.map((reg) => {
                 const isClosed = new Date() >= new Date(reg.registrationEnd);
                 return (
-                  <div key={reg.id} className="event-blob" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }} onClick={() => onNavigate('event-details', reg.eventId)}>
-                      <div className="blob-banner" style={{ background: '#f1f5f9' }} />
-                      <div>
-                        <h3>{reg.eventName}</h3>
-                        <p>{reg.festName}</p>
-                        <span style={{ fontSize: '11px', color: '#94a3b8' }}>Deadline: {formatDate(reg.registrationEnd)}</span>
+                  <div key={reg.id} className="event-blob" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', minWidth: 0, padding: '16px', flexDirection: 'column', gap: '16px' }}>
+                    <div style={{ display: 'flex', gap: '16px', alignItems: 'center', minWidth: 0, width: '100%', cursor: 'pointer' }} onClick={() => onNavigate('registration-details', reg.id)}>
+                      <div className="blob-banner" style={{ background: '#f1f5f9', width: '80px', height: '80px', flexShrink: 0, borderRadius: '12px' }} />
+                      <div style={{ minWidth: 0, flex: 1, paddingRight: '16px' }}>
+                        <h3 style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: '16px', color: '#1e293b', margin: '0 0 4px' }}>{reg.eventName}</h3>
+                        <p style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: '13px', color: '#64748b', margin: '0 0 4px' }}>{reg.festName}</p>
+                        <span style={{ fontSize: '11px', color: '#94a3b8', fontWeight: 600 }}>Deadline: {formatDate(reg.registrationEnd)}</span>
                       </div>
                     </div>
                     <button 
-                      className="cp-link-btn" 
-                      onClick={() => handleUnregister(reg.id, reg.registrationEnd)}
+                      className="cp-button" 
+                      onClick={(e) => handleUnregisterClick(reg, e)}
                       disabled={isClosed}
-                      style={{ color: isClosed ? '#cbd5e1' : '#ef4444', fontWeight: 600, fontSize: '12px' }}
+                      style={{ background: isClosed ? '#cbd5e1' : '#ef4444', width: '100%', marginTop: 'auto', boxShadow: isClosed ? 'none' : '0 2px 4px rgba(239, 68, 68, 0.1)' }}
                     >
                       {isClosed ? 'Closed' : 'Unregister'}
                     </button>

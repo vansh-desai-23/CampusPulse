@@ -42,7 +42,15 @@ export default function StudentHome({ auth, onNavigate, onLogout }) {
         ]);
         if (!isMounted) return;
         setFests(festsResponse.data || []);
-        setActivity(teamsResponse.data || []);
+        const uniqueActivity = [];
+        const seenActivity = new Set();
+        for (const team of teamsResponse.data || []) {
+          if (!seenActivity.has(team.eventId)) {
+            seenActivity.add(team.eventId);
+            uniqueActivity.push(team);
+          }
+        }
+        setActivity(uniqueActivity);
       } catch (error) {
         if (!isMounted) return;
         setDashboardError('Unable to load dashboard data.');
@@ -98,17 +106,7 @@ export default function StudentHome({ auth, onNavigate, onLogout }) {
       </header>
 
       <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-        <aside className="student-rail" style={{ height: 'auto', borderRight: '1px solid rgba(0,0,0,0.05)', background: 'transparent' }}>
-          <button className="rail-button is-active" type="button">
-            <img src="/assets/profile-icon.svg" alt="" className="rail-icon" />
-            <span>Profile</span>
-          </button>
-          <div style={{ marginTop: 'auto', padding: '16px' }}>
-            <button className="cp-link-btn" onClick={onLogout} style={{ fontSize: '11px', color: '#64748b' }}>Logout</button>
-          </div>
-        </aside>
-
-        <section className="student-workspace" style={{ overflowY: 'auto' }}>
+        <section className="student-workspace" style={{ overflowY: 'auto', width: '100%' }}>
           <div className="dashboard-content">
           {dashboardError && <p className="dashboard-notice">{dashboardError}</p>}
 
@@ -117,7 +115,7 @@ export default function StudentHome({ auth, onNavigate, onLogout }) {
               <div className="section-title-row">
                 <h2>My Activity</h2>
               </div>
-              <span className="section-eyebrow">Hi, {auth?.name}</span>
+              <span className="section-eyebrow" style={{ color: '#1e293b' }}>Hi, {auth?.name}</span>
             </div>
             
             <div className="activity-panel">
@@ -207,6 +205,13 @@ export default function StudentHome({ auth, onNavigate, onLogout }) {
         </div>
         </section>
       </div>
+      <button 
+        className="cp-button" 
+        onClick={onLogout} 
+        style={{ position: 'fixed', bottom: '24px', left: '24px', fontSize: '12px', width: 'auto', padding: '6px 16px', background: '#fff', color: '#ef4444', border: '1px solid #ef4444', boxShadow: '0 4px 6px rgba(0,0,0,0.05)', zIndex: 1000 }}
+      >
+        Logout
+      </button>
     </div>
   );
 }

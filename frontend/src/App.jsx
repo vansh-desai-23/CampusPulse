@@ -11,6 +11,8 @@ import FestPage from './components/FestPage';
 import EventPage from './components/EventPage';
 import AllFestsPage from './components/AllFestsPage';
 import InviteCodePage from './components/InviteCodePage';
+import RegisteredPage from './components/RegisteredPage';
+import RegistrationDetailsPage from './components/RegistrationDetailsPage';
 
 const initialAuthState = {
   name: '',
@@ -206,6 +208,7 @@ export default function App() {
         {view === 'event-details' && <EventPage eventId={selectedId} onNavigate={navigate} />}
         {view === 'invite-code' && <InviteCodePage onNavigate={navigate} />}
         {view === 'view-all-registered' && <RegisteredPage onNavigate={navigate} />}
+        {view === 'registration-details' && <RegistrationDetailsPage teamId={selectedId} onNavigate={navigate} />}
       </div>
     );
   };

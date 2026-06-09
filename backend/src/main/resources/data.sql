@@ -55,7 +55,6 @@ INSERT INTO teams (id, team_name, invite_code, event_id, leader_id) VALUES
 -- 6. POPULATE TEAM MEMBERS
 INSERT INTO team_members (id, status, team_id, user_id) VALUES
 (1, 1, 1, 5),
-(2, 1, 1, 7), -- Anish joins Rahul's Aagaaz team
 (3, 1, 2, 6),
 (4, 1, 3, 7),
 (5, 1, 4, 5),
