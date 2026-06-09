@@ -22,14 +22,19 @@ public class User {
     @Column(nullable = false)
     private String role;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "VARCHAR(255) DEFAULT 'ACTIVE'")
+    private UserStatus status = UserStatus.ACTIVE;
+
     public User() {
     }
 
-    public User(String email, String name, String password, String role) {
+    public User(String email, String name, String password, String role, UserStatus status) {
         this.email = email;
         this.name = name;
         this.password = password;
         this.role = role;
+        this.status = status;
     }
 
     public Long getId() {
@@ -70,5 +75,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
     }
 }

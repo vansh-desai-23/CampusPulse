@@ -18,11 +18,6 @@ export default function LandingPage({ landingBg, onNavigate }) {
           position: "relative",
           zIndex: 10
         }}>
-          <p style={{ fontSize: 13, fontWeight: 600, color: "#1a1a2e", marginBottom: 36 }}>
-            Global events running on CampusPulse:{" "}
-            <span style={{ color: "#7F77DD", fontFamily: "monospace" }}>2.4891023%</span>
-          </p>
-
           <h1 style={{
             fontSize: "clamp(36px, 4.5vw, 56px)",
             fontWeight: 800,
@@ -47,7 +42,7 @@ export default function LandingPage({ landingBg, onNavigate }) {
           </p>
 
           <div style={{ display: "flex", gap: 16 }}>
-            <button 
+            <button
               onClick={() => onNavigate('signup')}
               style={{
                 padding: "14px 28px", background: "#534AB7", color: "#fff",
@@ -56,7 +51,7 @@ export default function LandingPage({ landingBg, onNavigate }) {
             >
               Create an account ›
             </button>
-            <button 
+            <button
               onClick={() => onNavigate('signin')}
               style={{
                 padding: "14px 28px", background: "transparent", color: "#534AB7",

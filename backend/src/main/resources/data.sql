@@ -4,23 +4,25 @@
 
 -- 1. CLEAR EXISTING DATA (Optional, but ensures a clean state)
 SET FOREIGN_KEY_CHECKS = 0;
-TRUNCATE TABLE team_members;
-TRUNCATE TABLE teams;
-TRUNCATE TABLE events;
-TRUNCATE TABLE fests;
-TRUNCATE TABLE users;
+DELETE FROM team_members;
+DELETE FROM teams;
+DELETE FROM events;
+DELETE FROM fests;
+DELETE FROM users;
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- 2. POPULATE USERS
 -- Passwords are BCrypt hash for "password123"
-INSERT INTO users (id, name, email, password, role) VALUES
-(1, 'Admin Organizer', 'admin@fest.com', 'password123', 'ORGANIZER'),
-(2, 'IITB Cultural Team', 'moodi@iitb.ac.in', 'password123', 'ORGANIZER'),
-(3, 'BITS Goa Sports', 'spree@bits-goa.ac.in', 'password123', 'ORGANIZER'),
-(4, 'IITM Tech Team', 'shaastra@iitm.ac.in', 'password123', 'ORGANIZER'),
-(5, 'Rahul Sharma', 'rahul@gmail.com', 'password123', 'STUDENT'),
-(6, 'Priya Patel', 'priya@outlook.com', 'password123', 'STUDENT'),
-(7, 'Anish Kumar', 'anish@yahoo.com', 'password123', 'STUDENT');
+INSERT INTO users (id, name, email, password, role, status) VALUES
+(1, 'Admin Organizer', 'admin@fest.com', 'password123', 'ORGANIZER', 'ACTIVE'),
+(2, 'IITB Cultural Team', 'moodi@iitb.ac.in', 'password123', 'ORGANIZER', 'ACTIVE'),
+(3, 'BITS Goa Sports', 'spree@bits-goa.ac.in', 'password123', 'ORGANIZER', 'ACTIVE'),
+(4, 'IITM Tech Team', 'shaastra@iitm.ac.in', 'password123', 'ORGANIZER', 'ACTIVE'),
+(5, 'Rahul Sharma', 'rahul@gmail.com', 'password123', 'STUDENT', 'ACTIVE'),
+(6, 'Priya Patel', 'priya@outlook.com', 'password123', 'STUDENT', 'ACTIVE'),
+(7, 'Anish Kumar', 'anish@yahoo.com', 'password123', 'STUDENT', 'ACTIVE'),
+(8, 'Campus Gymkhana', 'superadmin@campus.edu', 'password123', 'SUPER_ADMIN', 'ACTIVE'),
+(9, 'New Tech Club', 'tech@newclub.edu', 'password123', 'ORGANIZER', 'PENDING_APPROVAL');
 
 -- 3. POPULATE FESTS
 INSERT INTO fests (id, name, description, type, status, banner_image_url, logo_image_url, fest_start_time, fest_end_time, created_at, owned_by) VALUES
@@ -32,16 +34,16 @@ INSERT INTO fests (id, name, description, type, status, banner_image_url, logo_i
 -- 4. POPULATE EVENTS
 INSERT INTO events (id, name, description, venue, event_banner_url, event_logo_url, max_capacity, current_bookings, max_team_size, registration_start, registration_end, physical_event_start, physical_event_end, fest_id) VALUES
 -- Mood Indigo Events
-(1, 'Aagaaz (Street Play)', 'The premier street play competition of Mood Indigo.', 'Convocation Hall Grounds', 'https://res.cloudinary.com/demo/image/upload/v1/aagaaz', NULL, 50, 2, 15, '2026-06-01 00:00:00', '2026-12-10 23:59:59', '2026-12-18 10:00:00', '2026-12-18 18:00:00', 1),
-(2, 'Vogue (Fashion Show)', 'Showcase your style on the grand stage.', 'Open Air Theatre', 'https://res.cloudinary.com/demo/image/upload/v1/vogue', NULL, 30, 1, 20, '2026-06-01 00:00:00', '2026-12-10 23:59:59', '2026-12-19 19:00:00', '2026-12-19 22:00:00', 1),
+(1, 'Aagaaz (Street Play)', 'The premier street play competition of Mood Indigo.', 'Convocation Hall Grounds', 'https://res.cloudinary.com/demo/image/upload/v1/aagaaz', NULL, 50, 2, 15, '2026-06-01 00:00:00', '2026-12-31 23:59:59', '2026-12-18 10:00:00', '2026-12-18 18:00:00', 1),
+(2, 'Vogue (Fashion Show)', 'Showcase your style on the grand stage.', 'Open Air Theatre', 'https://res.cloudinary.com/demo/image/upload/v1/vogue', NULL, 30, 1, 20, '2026-06-01 00:00:00', '2026-12-31 23:59:59', '2026-12-19 19:00:00', '2026-12-19 22:00:00', 1),
 
 -- Shaastra Events
-(3, 'Boeing Aeromodelling', 'Design and fly your own RC aircraft.', 'KV Grounds', 'https://res.cloudinary.com/demo/image/upload/v1/aero', NULL, 100, 1, 4, '2026-07-15 00:00:00', '2026-09-25 23:59:59', '2026-10-06 09:00:00', '2026-10-06 17:00:00', 2),
-(4, 'RoboWars', 'The ultimate metal-clashing combat.', 'Student Activity Centre', 'https://res.cloudinary.com/demo/image/upload/v1/robowars', NULL, 64, 0, 5, '2026-07-15 00:00:00', '2026-09-25 23:59:59', '2026-10-07 10:00:00', '2026-10-07 18:00:00', 2),
+(3, 'Boeing Aeromodelling', 'Design and fly your own RC aircraft.', 'KV Grounds', 'https://res.cloudinary.com/demo/image/upload/v1/aero', NULL, 100, 1, 4, '2026-06-01 00:00:00', '2026-12-31 23:59:59', '2026-10-06 09:00:00', '2026-10-06 17:00:00', 2),
+(4, 'RoboWars', 'The ultimate metal-clashing combat.', 'Student Activity Centre', 'https://res.cloudinary.com/demo/image/upload/v1/robowars', NULL, 64, 0, 5, '2026-06-01 00:00:00', '2026-12-31 23:59:59', '2026-10-07 10:00:00', '2026-10-07 18:00:00', 2),
 
 -- Spree Events
-(5, 'Inter-College Football', 'The battle for the Spree Cup.', 'Main Football Field', 'https://res.cloudinary.com/demo/image/upload/v1/football', NULL, 32, 1, 18, '2026-01-01 00:00:00', '2026-03-15 23:59:59', '2026-03-25 08:00:00', '2026-03-28 17:00:00', 3),
-(6, 'Night Marathon', 'Run through the scenic campus at night.', 'Campus Loop', 'https://res.cloudinary.com/demo/image/upload/v1/run', NULL, 500, 1, 1, '2026-01-01 00:00:00', '2026-03-20 23:59:59', '2026-03-26 21:00:00', '2026-03-26 23:00:00', 3);
+(5, 'Inter-College Football', 'The battle for the Spree Cup.', 'Main Football Field', 'https://res.cloudinary.com/demo/image/upload/v1/football', NULL, 32, 1, 18, '2026-06-01 00:00:00', '2026-12-31 23:59:59', '2026-03-25 08:00:00', '2026-03-28 17:00:00', 3),
+(6, 'Night Marathon', 'Run through the scenic campus at night.', 'Campus Loop', 'https://res.cloudinary.com/demo/image/upload/v1/run', NULL, 500, 1, 1, '2026-06-01 00:00:00', '2026-12-31 23:59:59', '2026-03-26 21:00:00', '2026-03-26 23:00:00', 3);
 
 -- 5. POPULATE TEAMS
 INSERT INTO teams (id, team_name, invite_code, event_id, leader_id) VALUES

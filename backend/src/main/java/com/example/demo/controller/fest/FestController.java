@@ -44,6 +44,12 @@ public class FestController {
         return ResponseEntity.ok(festService.listRecentlyPublishedFests());
     }
 
+    @GetMapping("/my-fests")
+    @PreAuthorize("hasRole('ORGANIZER')")
+    public ResponseEntity<List<FestResponse>> listMyFests() {
+        return ResponseEntity.ok(festService.listMyFests());
+    }
+
     @GetMapping("/{festId}")
     public ResponseEntity<FestResponse> getFest(@PathVariable Long festId) {
         return ResponseEntity.ok(festService.getFest(festId));

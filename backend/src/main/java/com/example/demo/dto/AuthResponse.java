@@ -8,14 +8,16 @@ public class AuthResponse {
     private final String email;
     private final String name;
     private final UserRole role;
+    private final String status;
 
-    public AuthResponse(String token, Long userId, String email, String name, UserRole role) {
+    public AuthResponse(String token, Long userId, String email, String name, UserRole role, String status) {
         this.token = token;
         this.tokenType = "Bearer";
         this.userId = userId;
         this.email = email;
         this.name = name;
         this.role = role;
+        this.status = status;
     }
 
     public String getToken() {
@@ -40,5 +42,9 @@ public class AuthResponse {
 
     public UserRole getRole() {
         return role;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }

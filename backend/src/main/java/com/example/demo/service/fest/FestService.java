@@ -70,6 +70,15 @@ public class FestService {
     }
 
     @Transactional(readOnly = true)
+    public List<FestResponse> listMyFests() {
+        currentUserService.requireRole(UserRole.ORGANIZER);
+        User currentUser = currentUserService.getCurrentUser();
+        return festRepository.findAllByOwnedByIdOrderByCreatedAtDesc(currentUser.getId()).stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
     public FestResponse getFest(Long festId) {
         Fest fest = festRepository.findById(festId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Fest not found"));

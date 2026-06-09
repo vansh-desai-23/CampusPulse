@@ -13,6 +13,11 @@ import AllFestsPage from './components/AllFestsPage';
 import InviteCodePage from './components/InviteCodePage';
 import RegisteredPage from './components/RegisteredPage';
 import RegistrationDetailsPage from './components/RegistrationDetailsPage';
+import WaitingApprovalPage from './components/WaitingApprovalPage';
+import SuperAdminDashboard from './components/SuperAdminDashboard';
+import OrganizerDashboard from './components/OrganizerDashboard';
+import FestCreatePage from './components/FestCreatePage';
+import FestManagementHub from './components/FestManagementHub';
 
 const initialAuthState = {
   name: '',
@@ -63,7 +68,13 @@ export default function App() {
         await api.get('/api/fests/published/recent');
         if (isMounted) {
           setAuth(savedAuth);
-          setView(savedAuth.role === 'STUDENT' ? 'student' : 'landing');
+          if (savedAuth.role === 'SUPER_ADMIN') {
+            setView('super-admin');
+          } else if (savedAuth.role === 'ORGANIZER') {
+            setView('organizer-dashboard');
+          } else {
+            setView(savedAuth.role === 'STUDENT' ? 'student' : 'landing');
+          }
         }
       } catch (error) {
         localStorage.removeItem('campuspulseAuth');
@@ -118,6 +129,12 @@ export default function App() {
         payload
       );
       const data = response.data;
+      
+      if (data.status === 'PENDING_APPROVAL') {
+        setView('waiting-approval');
+        return;
+      }
+
       const storage = rememberMe ? localStorage : sessionStorage;
 
       storage.setItem('campuspulseAuth', JSON.stringify(data));
@@ -125,6 +142,10 @@ export default function App() {
 
       if (data.role === 'STUDENT') {
         setView('student');
+      } else if (data.role === 'SUPER_ADMIN') {
+        setView('super-admin');
+      } else if (data.role === 'ORGANIZER') {
+        setView('organizer-dashboard');
       } else {
         setStatus({
           type: 'success',
@@ -132,6 +153,10 @@ export default function App() {
         });
       }
     } catch (error) {
+      if (error.response?.data?.message === 'ACCOUNT_PENDING' || error.response?.data?.error === 'ACCOUNT_PENDING') {
+        setView('waiting-approval');
+        return;
+      }
       setStatus({
         type: 'error',
         message:
@@ -209,6 +234,11 @@ export default function App() {
         {view === 'invite-code' && <InviteCodePage onNavigate={navigate} />}
         {view === 'view-all-registered' && <RegisteredPage onNavigate={navigate} />}
         {view === 'registration-details' && <RegistrationDetailsPage teamId={selectedId} onNavigate={navigate} />}
+        {view === 'waiting-approval' && <WaitingApprovalPage onNavigate={navigate} />}
+        {view === 'super-admin' && <SuperAdminDashboard auth={auth} onNavigate={navigate} onLogout={logout} />}
+        {view === 'organizer-dashboard' && <OrganizerDashboard auth={auth} onNavigate={navigate} onLogout={logout} />}
+        {view === 'fest-create' && <FestCreatePage onNavigate={navigate} />}
+        {view === 'fest-manage' && <FestManagementHub festId={selectedId} onNavigate={navigate} />}
       </div>
     );
   };
