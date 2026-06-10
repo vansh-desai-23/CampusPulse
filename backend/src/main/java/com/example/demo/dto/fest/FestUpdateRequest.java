@@ -11,7 +11,6 @@ public class FestUpdateRequest {
     private FestType type;
     private FestStatus status;
     private String bannerImageUrl;
-    private String logoImageUrl;
     private LocalDateTime festStartTime;
     private LocalDateTime festEndTime;
 
@@ -55,13 +54,6 @@ public class FestUpdateRequest {
         this.bannerImageUrl = bannerImageUrl;
     }
 
-    public String getLogoImageUrl() {
-        return logoImageUrl;
-    }
-
-    public void setLogoImageUrl(String logoImageUrl) {
-        this.logoImageUrl = logoImageUrl;
-    }
 
     public LocalDateTime getFestStartTime() {
         return festStartTime;

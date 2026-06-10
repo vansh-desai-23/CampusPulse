@@ -32,8 +32,7 @@ public class Event {
     @Column(name = "event_banner_url")
     private String eventBannerUrl;
 
-    @Column(name = "event_logo_url")
-    private String eventLogoUrl;
+
 
     @Column(nullable = false)
     private int maxCapacity;
@@ -103,13 +102,6 @@ public class Event {
         this.eventBannerUrl = eventBannerUrl;
     }
 
-    public String getEventLogoUrl() {
-        return eventLogoUrl;
-    }
-
-    public void setEventLogoUrl(String eventLogoUrl) {
-        this.eventLogoUrl = eventLogoUrl;
-    }
 
     public int getMaxCapacity() {
         return maxCapacity;

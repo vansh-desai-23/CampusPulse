@@ -17,7 +17,6 @@ public class EventCreateRequest {
 
     private String eventBannerUrl;
 
-    private String eventLogoUrl;
 
     @NotNull
     @Min(1)
@@ -70,13 +69,6 @@ public class EventCreateRequest {
         this.eventBannerUrl = eventBannerUrl;
     }
 
-    public String getEventLogoUrl() {
-        return eventLogoUrl;
-    }
-
-    public void setEventLogoUrl(String eventLogoUrl) {
-        this.eventLogoUrl = eventLogoUrl;
-    }
 
     public Integer getMaxCapacity() {
         return maxCapacity;

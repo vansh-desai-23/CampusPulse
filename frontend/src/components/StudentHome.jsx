@@ -92,7 +92,7 @@ export default function StudentHome({ auth, onNavigate, onLogout }) {
       <header className="dashboard-nav" style={{ width: '100%' }}>
         <button className="nav-brand" type="button" onClick={() => onNavigate('student')}>CampusPulse</button>
         <div className="fest-filter-group" style={{ margin: '0 auto' }}>
-          {['ALL', 'TECHNICAL', 'CULTURAL', 'SPORT', 'UPCOMING'].map((f) => (
+          {['ALL', 'TECHNICAL', 'CULTURAL', 'SPORT', 'OTHER', 'UPCOMING'].map((f) => (
             <button
               key={f}
               className={activeFestFilter === f ? 'is-active' : ''}
@@ -131,7 +131,11 @@ export default function StudentHome({ auth, onNavigate, onLogout }) {
                   {activity.length === 0 ? <p className="empty-copy">No registrations yet.</p> : (
                     activity.slice(0, 3).map((team) => (
                       <article className="activity-card" key={team.id}>
-                        <span className="activity-mark" />
+                        {team.eventBannerUrl ? (
+                          <div className="activity-mark" style={{ backgroundImage: `url(${team.eventBannerUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+                        ) : (
+                          <span className="activity-mark" />
+                        )}
                         <div>
                           <h3>{team.eventName}</h3>
                           <p>{team.festName}</p>

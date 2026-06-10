@@ -45,8 +45,7 @@ public class Fest {
     @Column(name = "banner_image_url")
     private String bannerImageUrl;
 
-    @Column(name = "logo_image_url")
-    private String logoImageUrl;
+
 
     @Column(nullable = false)
     private LocalDateTime festStartTime;
@@ -113,13 +112,6 @@ public class Fest {
         this.bannerImageUrl = bannerImageUrl;
     }
 
-    public String getLogoImageUrl() {
-        return logoImageUrl;
-    }
-
-    public void setLogoImageUrl(String logoImageUrl) {
-        this.logoImageUrl = logoImageUrl;
-    }
 
     public LocalDateTime getFestStartTime() {
         return festStartTime;

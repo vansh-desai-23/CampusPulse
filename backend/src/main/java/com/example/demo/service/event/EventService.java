@@ -66,7 +66,6 @@ public class EventService {
         event.setDescription(request.getDescription());
         event.setVenue(request.getVenue().trim());
         event.setEventBannerUrl(request.getEventBannerUrl());
-        event.setEventLogoUrl(request.getEventLogoUrl());
         event.setMaxCapacity(request.getMaxCapacity());
         event.setMaxTeamSize(request.getMaxTeamSize() == null ? 1 : request.getMaxTeamSize());
         event.setRegistrationStart(registrationStart);
@@ -135,9 +134,6 @@ public class EventService {
         }
         if (request.getEventBannerUrl() != null) {
             event.setEventBannerUrl(request.getEventBannerUrl());
-        }
-        if (request.getEventLogoUrl() != null) {
-            event.setEventLogoUrl(request.getEventLogoUrl());
         }
         event.setMaxCapacity(maxCapacity);
         event.setMaxTeamSize(maxTeamSize);
@@ -243,7 +239,6 @@ public class EventService {
         response.setDescription(event.getDescription());
         response.setVenue(event.getVenue());
         response.setEventBannerUrl(event.getEventBannerUrl());
-        response.setEventLogoUrl(event.getEventLogoUrl());
         response.setMaxCapacity(event.getMaxCapacity());
         response.setCurrentBookings(event.getCurrentBookings());
         response.setMaxTeamSize(event.getMaxTeamSize());

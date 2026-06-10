@@ -20,7 +20,16 @@ public class TeamResponse {
     private int eventCurrentBookings;
     private int eventMaxCapacity;
     private java.time.LocalDateTime registrationEnd;
+    private String eventBannerUrl;
     private List<TeamMemberView> members;
+
+    public String getEventBannerUrl() {
+        return eventBannerUrl;
+    }
+
+    public void setEventBannerUrl(String eventBannerUrl) {
+        this.eventBannerUrl = eventBannerUrl;
+    }
 
     public Long getId() {
         return id;

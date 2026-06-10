@@ -93,7 +93,7 @@ export default function RegisteredPage({ onNavigate }) {
                 return (
                   <div key={reg.id} className="event-blob" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', minWidth: 0, padding: '16px', flexDirection: 'column', gap: '16px' }}>
                     <div style={{ display: 'flex', gap: '16px', alignItems: 'center', minWidth: 0, width: '100%', cursor: 'pointer' }} onClick={() => onNavigate('registration-details', reg.id)}>
-                      <div className="blob-banner" style={{ background: '#f1f5f9', width: '80px', height: '80px', flexShrink: 0, borderRadius: '12px' }} />
+                      <div className="blob-banner" style={{ background: '#f1f5f9', backgroundImage: reg.eventBannerUrl ? `url(${reg.eventBannerUrl})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center', width: '80px', height: '80px', flexShrink: 0, borderRadius: '12px' }} />
                       <div style={{ minWidth: 0, flex: 1, paddingRight: '16px' }}>
                         <h3 style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: '16px', color: '#1e293b', margin: '0 0 4px' }}>{reg.eventName}</h3>
                         <p style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontSize: '13px', color: '#64748b', margin: '0 0 4px' }}>{reg.festName}</p>

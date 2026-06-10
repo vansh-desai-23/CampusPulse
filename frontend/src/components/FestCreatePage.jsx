@@ -9,8 +9,7 @@ export default function FestCreatePage({ onNavigate }) {
     type: 'CULTURAL',
     festStartTime: '',
     festEndTime: '',
-    bannerImageUrl: '',
-    logoImageUrl: ''
+    bannerImageUrl: ''
   });
   const [isDirty, setIsDirty] = useState(false);
   const [error, setError] = useState(null);
@@ -95,7 +94,8 @@ export default function FestCreatePage({ onNavigate }) {
               <select className="cp-input" name="type" value={formData.type} onChange={handleChange} required>
                 <option value="CULTURAL">CULTURAL</option>
                 <option value="TECHNICAL">TECHNICAL</option>
-                <option value="SEMINAR">SEMINAR</option>
+                <option value="SPORT">SPORT</option>
+                <option value="OTHER">OTHER</option>
               </select>
             </div>
 
@@ -110,21 +110,12 @@ export default function FestCreatePage({ onNavigate }) {
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '16px' }}>
-              <div style={{ flex: 1 }}>
-                <CloudinaryUpload 
-                  label="Fest Banner" 
-                  currentUrl={formData.bannerImageUrl} 
-                  onUploadSuccess={(url) => handleUploadSuccess('bannerImageUrl', url)} 
-                />
-              </div>
-              <div style={{ flex: 1 }}>
-                <CloudinaryUpload 
-                  label="Fest Logo" 
-                  currentUrl={formData.logoImageUrl} 
-                  onUploadSuccess={(url) => handleUploadSuccess('logoImageUrl', url)} 
-                />
-              </div>
+            <div>
+              <CloudinaryUpload 
+                label="Fest Banner" 
+                currentUrl={formData.bannerImageUrl} 
+                onUploadSuccess={(url) => handleUploadSuccess('bannerImageUrl', url)} 
+              />
             </div>
 
             <div style={{ marginTop: '16px' }}>

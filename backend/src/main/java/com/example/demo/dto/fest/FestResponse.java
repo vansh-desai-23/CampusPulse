@@ -14,7 +14,6 @@ public class FestResponse {
     private FestType type;
     private FestStatus status;
     private String bannerImageUrl;
-    private String logoImageUrl;
     private LocalDateTime festStartTime;
     private LocalDateTime festEndTime;
     private LocalDateTime createdAt;
@@ -71,13 +70,6 @@ public class FestResponse {
         this.bannerImageUrl = bannerImageUrl;
     }
 
-    public String getLogoImageUrl() {
-        return logoImageUrl;
-    }
-
-    public void setLogoImageUrl(String logoImageUrl) {
-        this.logoImageUrl = logoImageUrl;
-    }
 
     public LocalDateTime getFestStartTime() {
         return festStartTime;

@@ -44,33 +44,33 @@ INSERT INTO users (id, name, email, password, role, status) VALUES
 
 
 -- 3. POPULATE FESTS (Exactly 4 Fests)
-INSERT INTO fests (id, name, description, type, status, banner_image_url, logo_image_url, fest_start_time, fest_end_time, created_at, owned_by) VALUES
-(1, 'Oasis 2025', 'The renowned cultural fest of BITS Pilani.', 'CULTURAL', 'PUBLISHED', 'https://res.cloudinary.com/dclqggg1d/image/upload/q_auto/f_auto/v1781013220/OASIS_Banner_gsbbxy.png', 'CLOUDINARY_LOGO_FEST_1', '2026-05-10 09:00:00', '2026-05-15 23:59:59', NOW(), 2),
-(2, 'Spandan 2026', 'IIIT-Bangalore''s biggest cultural extravaganza.', 'CULTURAL', 'PUBLISHED', 'https://res.cloudinary.com/dclqggg1d/image/upload/q_auto/f_auto/v1781014584/spandan_banner_ulfnbx.png', 'CLOUDINARY_LOGO_FEST_2', '2027-04-10 09:00:00', '2027-04-12 23:59:59', NOW(), 1),
-(3, 'Techfest 2026', 'Asia''s largest science and technology festival.', 'TECHNICAL', 'PUBLISHED', 'https://res.cloudinary.com/dclqggg1d/image/upload/q_auto/f_auto/v1781016074/Techfest_banner_1_rns1wk.png', 'CLOUDINARY_LOGO_FEST_3', '2027-02-01 09:00:00', '2027-02-05 23:59:59', NOW(), 3),
-(4, 'Infin8 2026', 'The annual sports and tech fest of IIIT-Bangalore.', 'SPORT', 'PUBLISHED', 'https://res.cloudinary.com/dclqggg1d/image/upload/q_auto/f_auto/v1781015586/infin8_banner_vjbxk9.png', 'CLOUDINARY_LOGO_FEST_4', '2027-03-10 09:00:00', '2027-03-12 23:59:59', NOW(), 1);
+INSERT INTO fests (id, name, description, type, status, banner_image_url, fest_start_time, fest_end_time, created_at, owned_by) VALUES
+(1, 'Oasis 2025', 'The renowned cultural fest of BITS Pilani.', 'CULTURAL', 'PUBLISHED', 'https://res.cloudinary.com/dclqggg1d/image/upload/q_auto/f_auto/v1781013220/OASIS_Banner_gsbbxy.png', '2026-05-10 09:00:00', '2026-05-15 23:59:59', NOW(), 2),
+(2, 'Spandan 2026', 'IIIT-Bangalore''s biggest sport extravaganza.', 'SPORT', 'PUBLISHED', 'https://res.cloudinary.com/dclqggg1d/image/upload/q_auto/f_auto/v1781014584/spandan_banner_ulfnbx.png', '2027-04-10 09:00:00', '2027-04-12 23:59:59', NOW(), 1),
+(3, 'Techfest 2026', 'Asia''s largest science and technology festival.', 'TECHNICAL', 'PUBLISHED', 'https://res.cloudinary.com/dclqggg1d/image/upload/q_auto/f_auto/v1781016074/Techfest_banner_1_rns1wk.png', '2027-02-01 09:00:00', '2027-02-05 23:59:59', NOW(), 3),
+(4, 'Infin8 2026', 'The annual cultural and tech fest of IIIT-Bangalore.', 'CULTURAL', 'PUBLISHED', 'https://res.cloudinary.com/dclqggg1d/image/upload/q_auto/f_auto/v1781015586/infin8_banner_vjbxk9.png', '2027-03-10 09:00:00', '2027-03-12 23:59:59', NOW(), 1);
 
 
 -- 4. POPULATE EVENTS (Exactly 9 events)
 -- current_bookings exactly matches the number of teams for that event.
-INSERT INTO events (id, name, description, venue, event_banner_url, event_logo_url, max_capacity, current_bookings, max_team_size, registration_start, registration_end, physical_event_start, physical_event_end, fest_id, tickets_generated) VALUES
+INSERT INTO events (id, name, description, venue, event_banner_url, max_capacity, current_bookings, max_team_size, registration_start, registration_end, physical_event_start, physical_event_end, fest_id, tickets_generated) VALUES
 
 -- Fest 1: Oasis '25 (Past) -> Registration closed, Event Past, tickets generated
-(1, 'Rocktaves', 'Rock band competition.', 'Rotunda', 'https://res.cloudinary.com/dclqggg1d/image/upload/q_auto/f_auto/v1781016779/rocktaves_sjicgv.png', 'CLOUDINARY_LOGO_EVENT_1', 20, 1, 5, '2026-04-01 00:00:00', '2026-04-30 23:59:59', '2026-05-11 18:00:00', '2026-05-11 23:00:00', 1, 1),
-(2, 'Mr. and Ms. Oasis', 'Personality pageant.', 'Main Auditorium', 'CLOUDINARY_BANNER_EVENT_2', 'CLOUDINARY_LOGO_EVENT_2', 30, 1, 1, '2026-04-01 00:00:00', '2026-04-30 23:59:59', '2026-05-12 18:00:00', '2026-05-12 21:00:00', 1, 1),
+(1, 'Rocktaves', 'Rock band competition.', 'Rotunda', 'https://res.cloudinary.com/dclqggg1d/image/upload/q_auto/f_auto/v1781017912/rocktaves1_ndkbtk.png', 20, 1, 5, '2026-04-01 00:00:00', '2026-04-30 23:59:59', '2026-05-11 18:00:00', '2026-05-11 23:00:00', 1, 1),
+(2, 'Mr. and Ms. Oasis', 'Personality pageant.', 'Main Auditorium', 'https://res.cloudinary.com/dclqggg1d/image/upload/q_auto/f_auto/v1781021002/mrmsoasis_psmn5q.png', 30, 1, 1, '2026-04-01 00:00:00', '2026-04-30 23:59:59', '2026-05-12 18:00:00', '2026-05-12 21:00:00', 1, 1),
 
 -- Fest 2: Spandan '26 (Active Reg) -> Registration active, Event Future, tickets not generated
-(3, 'Fashion Show', 'The flagship glamour event.', 'Open Air Theatre', 'CLOUDINARY_BANNER_EVENT_3', 'CLOUDINARY_LOGO_EVENT_3', 25, 2, 10, '2026-05-01 00:00:00', '2027-04-01 23:59:59', '2027-04-11 19:00:00', '2027-04-11 22:00:00', 2, 0),
-(4, 'Battle of Bands', 'Live music competition.', 'Main Stage', 'CLOUDINARY_BANNER_EVENT_4', 'CLOUDINARY_LOGO_EVENT_4', 15, 1, 6, '2026-05-01 00:00:00', '2027-04-01 23:59:59', '2027-04-12 18:00:00', '2027-04-12 23:00:00', 2, 0),
+(3, 'Fashion Show', 'The flagship glamour event.', 'Open Air Theatre', 'https://res.cloudinary.com/dclqggg1d/image/upload/q_auto/f_auto/v1781027104/fashionshow_oherng.png', 25, 2, 10, '2026-05-01 00:00:00', '2027-04-01 23:59:59', '2027-04-11 19:00:00', '2027-04-11 22:00:00', 2, 0),
+(4, 'Battle of Bands', 'Live music competition.', 'Main Stage', 'https://res.cloudinary.com/dclqggg1d/image/upload/q_auto/f_auto/v1781020814/battleofbands_mz9yym.png', 15, 1, 6, '2026-05-01 00:00:00', '2027-04-01 23:59:59', '2027-04-12 18:00:00', '2027-04-12 23:00:00', 2, 0),
 
 -- Fest 3: Techfest '26 (Reg Closed, QR Phase) -> Registration closed yesterday, Event Future, tickets generated
-(5, 'Robowars', 'Heavyweight robot combat.', 'Gymkhana Grounds', 'CLOUDINARY_BANNER_EVENT_5', 'CLOUDINARY_LOGO_EVENT_5', 32, 2, 4, '2026-01-01 00:00:00', '2026-06-08 23:59:59', '2027-02-02 10:00:00', '2027-02-02 18:00:00', 3, 1),
-(6, 'International Coding Challenge', 'Algorithm and DS competition.', 'Lecture Hall Complex', 'CLOUDINARY_BANNER_EVENT_6', 'CLOUDINARY_LOGO_EVENT_6', 200, 1, 3, '2026-01-01 00:00:00', '2026-06-08 23:59:59', '2027-02-03 09:00:00', '2027-02-03 14:00:00', 3, 1),
+(5, 'Robowars', 'Heavyweight robot combat.', 'Gymkhana Grounds', 'https://res.cloudinary.com/dclqggg1d/image/upload/q_auto/f_auto/v1781018771/robowars_uvi6lu.png', 32, 2, 4, '2026-01-01 00:00:00', '2026-06-08 23:59:59', '2027-02-02 10:00:00', '2027-02-02 18:00:00', 3, 1),
+(6, 'International Coding Challenge', 'Algorithm and DS competition.', 'Lecture Hall Complex', 'https://res.cloudinary.com/dclqggg1d/image/upload/q_auto/f_auto/v1781019522/codingchallenge_cccpwa.png', 200, 1, 3, '2026-01-01 00:00:00', '2026-06-08 23:59:59', '2027-02-03 09:00:00', '2027-02-03 14:00:00', 3, 1),
 
 -- Fest 4: Infin8 '26 (Mixed)
-(7, 'Hackathon', '48-hour coding marathon.', 'Innovation Lab', 'CLOUDINARY_BANNER_EVENT_7', 'CLOUDINARY_LOGO_EVENT_7', 50, 1, 4, '2026-05-01 00:00:00', '2027-03-01 23:59:59', '2027-03-10 10:00:00', '2027-03-12 10:00:00', 4, 0),
-(8, 'E-Sports Tournament', 'Valorant and CS2 competition.', 'Computer Centre', 'CLOUDINARY_BANNER_EVENT_8', 'CLOUDINARY_LOGO_EVENT_8', 64, 1, 5, '2026-05-01 00:00:00', '2026-06-09 23:59:59', '2027-03-11 10:00:00', '2027-03-11 20:00:00', 4, 0),
-(9, 'Inter-College Basketball', 'Knockout basketball tournament.', 'Sports Complex', 'CLOUDINARY_BANNER_EVENT_9', 'CLOUDINARY_LOGO_EVENT_9', 16, 1, 12, '2026-05-01 00:00:00', '2027-03-01 23:59:59', '2027-03-10 08:00:00', '2027-03-12 18:00:00', 4, 0);
+(7, 'Hackathon', '48-hour coding marathon.', 'Innovation Lab', 'https://res.cloudinary.com/dclqggg1d/image/upload/q_auto/f_auto/v1781018918/infin8hackathon_vyhz6t.png', 50, 1, 4, '2026-05-01 00:00:00', '2027-03-01 23:59:59', '2027-03-10 10:00:00', '2027-03-12 10:00:00', 4, 0),
+(8, 'E-Sports Tournament', 'Valorant and CS2 competition.', 'Computer Centre', 'https://res.cloudinary.com/dclqggg1d/image/upload/q_auto/f_auto/v1781019147/esportsiiitb_axinfx.png', 64, 1, 5, '2026-05-01 00:00:00', '2026-06-09 23:59:59', '2027-03-11 10:00:00', '2027-03-11 20:00:00', 4, 0),
+(9, 'Inter-College Basketball', 'Knockout basketball tournament.', 'Sports Complex', 'https://res.cloudinary.com/dclqggg1d/image/upload/q_auto/f_auto/v1781019361/basketballiiitb_toosjm.png', 16, 1, 12, '2026-05-01 00:00:00', '2027-03-01 23:59:59', '2027-03-10 08:00:00', '2027-03-12 18:00:00', 4, 0);
 
 
 -- 5. POPULATE TEAMS (Total 11 Teams mapping directly to current_bookings)

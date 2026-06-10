@@ -8,7 +8,6 @@ public class EventUpdateRequest {
     private String description;
     private String venue;
     private String eventBannerUrl;
-    private String eventLogoUrl;
     private Integer maxCapacity;
     private Integer maxTeamSize;
     private LocalDateTime registrationStart;
@@ -48,13 +47,6 @@ public class EventUpdateRequest {
         this.eventBannerUrl = eventBannerUrl;
     }
 
-    public String getEventLogoUrl() {
-        return eventLogoUrl;
-    }
-
-    public void setEventLogoUrl(String eventLogoUrl) {
-        this.eventLogoUrl = eventLogoUrl;
-    }
 
     public Integer getMaxCapacity() {
         return maxCapacity;

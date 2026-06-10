@@ -20,8 +20,7 @@ export default function FestManagementHub({ festId, onNavigate }) {
     registrationEnd: '',
     physicalEventStart: '',
     physicalEventEnd: '',
-    eventBannerUrl: '',
-    eventLogoUrl: ''
+    eventBannerUrl: ''
   });
   const [isEventDirty, setIsEventDirty] = useState(false);
   const [eventError, setEventError] = useState(null);
@@ -59,7 +58,7 @@ export default function FestManagementHub({ festId, onNavigate }) {
     setEventData({
       name: '', description: '', venue: '', maxCapacity: 1, maxTeamSize: 1,
       registrationStart: '', registrationEnd: '', physicalEventStart: '', physicalEventEnd: '',
-      eventBannerUrl: '', eventLogoUrl: ''
+      eventBannerUrl: ''
     });
     setIsEventDirty(false);
     setEventError(null);
@@ -168,9 +167,6 @@ export default function FestManagementHub({ festId, onNavigate }) {
         </div>
         
         <div style={{ position: 'absolute', bottom: '60px', left: '40px', display: 'flex', alignItems: 'center', gap: '24px', zIndex: 10 }}>
-          {fest.logoImageUrl && (
-            <img src={fest.logoImageUrl} alt="Logo" style={{ width: '120px', height: '120px', borderRadius: '20px', border: '4px solid rgba(255,255,255,0.2)', background: '#fff', objectFit: 'cover', boxShadow: '0 8px 24px rgba(0,0,0,0.3)' }} />
-          )}
           <div style={{ background: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(12px)', padding: '20px 28px', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 8px 32px rgba(0,0,0,0.2)' }}>
             <h1 style={{ color: '#fff', margin: '0 0 8px', fontSize: '36px', fontWeight: 800, textShadow: '0 2px 4px rgba(0,0,0,0.4)', letterSpacing: '-0.5px' }}>{fest.name}</h1>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -360,13 +356,8 @@ export default function FestManagementHub({ festId, onNavigate }) {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '16px' }}>
-                <div style={{ flex: 1 }}>
-                  <CloudinaryUpload label="Event Banner" currentUrl={eventData.eventBannerUrl} onUploadSuccess={(url) => handleEventUpload('eventBannerUrl', url)} />
-                </div>
-                <div style={{ flex: 1 }}>
-                  <CloudinaryUpload label="Event Logo" currentUrl={eventData.eventLogoUrl} onUploadSuccess={(url) => handleEventUpload('eventLogoUrl', url)} />
-                </div>
+              <div>
+                <CloudinaryUpload label="Event Banner" currentUrl={eventData.eventBannerUrl} onUploadSuccess={(url) => handleEventUpload('eventBannerUrl', url)} />
               </div>
 
               <button type="submit" className="cp-button" disabled={submittingEvent} style={{ width: '100%', marginTop: '8px' }}>

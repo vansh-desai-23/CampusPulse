@@ -11,7 +11,6 @@ public class EventResponse {
     private String description;
     private String venue;
     private String eventBannerUrl;
-    private String eventLogoUrl;
     private int maxCapacity;
     private int currentBookings;
     private int maxTeamSize;
@@ -64,13 +63,6 @@ public class EventResponse {
         this.eventBannerUrl = eventBannerUrl;
     }
 
-    public String getEventLogoUrl() {
-        return eventLogoUrl;
-    }
-
-    public void setEventLogoUrl(String eventLogoUrl) {
-        this.eventLogoUrl = eventLogoUrl;
-    }
 
     public int getMaxCapacity() {
         return maxCapacity;

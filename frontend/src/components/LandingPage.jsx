@@ -25,8 +25,8 @@ export default function LandingPage({ landingBg, onNavigate }) {
             color: "#1a1a2e",
             margin: "0 0 24px",
           }}>
-            Event infrastructure to power your{" "}
-            <span style={{ color: "#534AB7" }}> campus.</span>
+            The ultimate hub for your{" "}
+            <span style={{ color: "#534AB7" }}> campus fests.</span>
           </h1>
 
           <p style={{
@@ -36,9 +36,7 @@ export default function LandingPage({ landingBg, onNavigate }) {
             margin: "0 0 44px",
             maxWidth: 560,
           }}>
-            Manage live capacities, issue secure tickets, and organize
-            high-demand cultural and technical fests — from the first
-            registration to the final entry.
+            Discover the biggest cultural and tech events, grab your digital tickets instantly, and secure your spot before they sell out. From booking with your squad to scanning in at the door, we make fest life effortless.
           </p>
 
           <div style={{ display: "flex", gap: 16 }}>

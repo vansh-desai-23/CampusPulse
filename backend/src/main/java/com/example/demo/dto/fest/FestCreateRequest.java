@@ -17,7 +17,6 @@ public class FestCreateRequest {
 
     private String bannerImageUrl;
 
-    private String logoImageUrl;
 
     @NotNull
     private LocalDateTime festStartTime;
@@ -57,13 +56,6 @@ public class FestCreateRequest {
         this.bannerImageUrl = bannerImageUrl;
     }
 
-    public String getLogoImageUrl() {
-        return logoImageUrl;
-    }
-
-    public void setLogoImageUrl(String logoImageUrl) {
-        this.logoImageUrl = logoImageUrl;
-    }
 
     public LocalDateTime getFestStartTime() {
         return festStartTime;

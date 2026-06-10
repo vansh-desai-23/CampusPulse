@@ -45,7 +45,7 @@ public class TeamService {
         this.teamRepository = teamRepository;
         this.teamMemberRepository = teamMemberRepository;
         this.currentUserService = currentUserService;
-        this.clock = Clock.systemUTC();
+        this.clock = Clock.systemDefaultZone();
     }
 
     @Transactional
@@ -147,7 +147,7 @@ public class TeamService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
 
         // Only allowed before registration end time
-        LocalDateTime now = LocalDateTime.now(clock.withZone(ZoneOffset.UTC));
+        LocalDateTime now = LocalDateTime.now();
         if (!now.isBefore(event.getRegistrationEnd())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot unregister after registration has closed");
         }
@@ -186,7 +186,7 @@ public class TeamService {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Bookings are not open for this event");
         }
 
-        LocalDateTime now = LocalDateTime.now(clock.withZone(ZoneOffset.UTC));
+        LocalDateTime now = LocalDateTime.now();
         if (now.isBefore(event.getRegistrationStart()) || !now.isBefore(event.getRegistrationEnd())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Registration window is closed");
         }
@@ -283,6 +283,7 @@ public class TeamService {
         response.setEventCurrentBookings(team.getEvent().getCurrentBookings());
         response.setEventMaxCapacity(team.getEvent().getMaxCapacity());
         response.setRegistrationEnd(team.getEvent().getRegistrationEnd());
+        response.setEventBannerUrl(team.getEvent().getEventBannerUrl());
         response.setMembers(members.stream().map(member -> {
             TeamMemberView view = new TeamMemberView();
             view.setUserId(member.getUser().getId());

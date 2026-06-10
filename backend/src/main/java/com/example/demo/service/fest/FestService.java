@@ -46,7 +46,6 @@ public class FestService {
         fest.setDescription(request.getDescription());
         fest.setType(request.getType());
         fest.setBannerImageUrl(request.getBannerImageUrl());
-        fest.setLogoImageUrl(request.getLogoImageUrl());
         fest.setFestStartTime(request.getFestStartTime());
         fest.setFestEndTime(request.getFestEndTime());
         fest.setOwnedBy(currentUser);
@@ -118,9 +117,6 @@ public class FestService {
         if (request.getBannerImageUrl() != null) {
             fest.setBannerImageUrl(request.getBannerImageUrl());
         }
-        if (request.getLogoImageUrl() != null) {
-            fest.setLogoImageUrl(request.getLogoImageUrl());
-        }
         fest.setFestStartTime(pair.start());
         fest.setFestEndTime(pair.end());
 
@@ -184,7 +180,6 @@ public class FestService {
         response.setType(fest.getType());
         response.setStatus(fest.getStatus());
         response.setBannerImageUrl(fest.getBannerImageUrl());
-        response.setLogoImageUrl(fest.getLogoImageUrl());
         response.setFestStartTime(fest.getFestStartTime());
         response.setFestEndTime(fest.getFestEndTime());
         response.setCreatedAt(fest.getCreatedAt());
@@ -204,7 +199,6 @@ public class FestService {
         response.setDescription(event.getDescription());
         response.setVenue(event.getVenue());
         response.setEventBannerUrl(event.getEventBannerUrl());
-        response.setEventLogoUrl(event.getEventLogoUrl());
         response.setMaxCapacity(event.getMaxCapacity());
         response.setCurrentBookings(event.getCurrentBookings());
         response.setMaxTeamSize(event.getMaxTeamSize());

@@ -42,7 +42,7 @@ export default function AllFestsPage({ onNavigate }) {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
           <h1 className="cp-title" style={{ fontSize: '24px', margin: 0 }}>Explore Fests</h1>
           <div className="fest-filter-group">
-            {['ALL', 'TECHNICAL', 'CULTURAL', 'SPORT'].map((f) => (
+            {['ALL', 'TECHNICAL', 'CULTURAL', 'SPORT', 'OTHER'].map((f) => (
               <button
                 key={f}
                 className={activeFilter === f ? 'is-active' : ''}
