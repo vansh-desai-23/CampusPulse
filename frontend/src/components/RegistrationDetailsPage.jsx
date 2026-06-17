@@ -136,7 +136,15 @@ export default function RegistrationDetailsPage({ teamId, onNavigate }) {
               className="cp-button" 
               onClick={initiateUnregister} 
               disabled={isClosed}
-              style={{ width: 'auto', padding: '0 24px', background: isClosed ? '#cbd5e1' : '#ef4444', color: '#fff', boxShadow: isClosed ? 'none' : '0 2px 4px rgba(239, 68, 68, 0.1)' }}
+              style={{ 
+                width: 'auto', 
+                padding: '0 24px', 
+                background: isClosed ? '#cbd5e1' : '#ffffff', 
+                color: isClosed ? '#94a3b8' : '#ef4444', 
+                border: isClosed ? '1.5px solid #cbd5e1' : '1.5px solid #ef4444', 
+                borderRadius: '8px', 
+                boxShadow: 'none' 
+              }}
             >
               {isClosed ? 'Registration Closed' : 'Unregister from Event'}
             </button>

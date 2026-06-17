@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
 import { QRCodeCanvas } from 'qrcode.react';
+import walletIcon from '../assets/wallet.svg';
 
 export default function StudentWallet({ auth, onNavigate }) {
   const [teams, setTeams] = useState([]);
@@ -31,13 +32,13 @@ export default function StudentWallet({ auth, onNavigate }) {
           ‹ Back to Dashboard
         </button>
         <h1 style={{ margin: 0, fontSize: '20px', fontWeight: 700, color: '#1e293b', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#534AB7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          <img src={walletIcon} alt="Wallet" style={{ width: '24px', height: '24px' }} />
           My Digital Wallet
         </h1>
         <div style={{ width: '130px' }}></div> {/* Spacer */}
       </header>
 
-      <main style={{ maxWidth: '800px', margin: '40px auto', padding: '0 20px' }}>
+      <main className="details-content">
         <p style={{ color: '#64748b', fontSize: '16px', marginBottom: '32px' }}>Your secured passes for upcoming events.</p>
 
         {teams.length === 0 ? (

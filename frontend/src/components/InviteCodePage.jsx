@@ -39,7 +39,7 @@ export default function InviteCodePage({ onNavigate }) {
         <div className="cp-card">
           <div className="cp-card-body">
             <h1 className="cp-title">Enter Invite Code</h1>
-            <p style={{ fontSize: '11px', color: '#64748b', marginBottom: '20px' }}>
+            <p style={{ fontSize: '15px', color: '#64748b', marginBottom: '20px' }}>
               Enter the unique code shared by your teammate to join their group.
             </p>
 
@@ -57,7 +57,7 @@ export default function InviteCodePage({ onNavigate }) {
               </label>
 
               {status.message && (
-                <div style={{ marginTop: '12px', fontSize: '11px', color: status.type === 'error' ? '#ef4444' : '#10b981', textAlign: 'center' }}>
+                <div style={{ marginTop: '12px', fontSize: '14px', color: status.type === 'error' ? '#ef4444' : '#10b981', textAlign: 'center' }}>
                   {status.message}
                 </div>
               )}

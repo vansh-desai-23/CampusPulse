@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import api from '../api';
+import walletIcon from '../assets/wallet.svg';
 
 function formatDate(value) {
   if (!value) return 'Date pending';
@@ -103,8 +104,8 @@ export default function StudentHome({ auth, onNavigate, onLogout }) {
           ))}
         </div>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <button className="cp-button" onClick={() => onNavigate('student-wallet')} style={{ background: '#0f172a', color: '#fff', border: '1px solid rgba(255,255,255,0.1)', padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> 
+          <button onClick={() => onNavigate('student-wallet')} style={{ minHeight: '38px', padding: '6px 16px', borderRadius: '20px', border: '1px solid #e2e8f0', background: '#fff', fontSize: '13px', fontWeight: '500', color: '#64748b', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', transition: 'all 0.2s' }}>
+            <img src={walletIcon} alt="Wallet" style={{ width: '16px', height: '16px' }} /> 
             Wallet
           </button>
           <button className="invite-button" onClick={() => onNavigate('invite-code')} style={{ marginLeft: 0 }}>Use invite code</button>
