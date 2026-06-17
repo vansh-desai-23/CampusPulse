@@ -25,3 +25,4 @@ public interface FestRepository extends JpaRepository<Fest, Long> {
     @Query("select f from Fest f where f.id = :id")
     Optional<Fest> findByIdForUpdate(@Param("id") Long id);
 }
+

@@ -22,3 +22,4 @@ public interface TeamMemberRepository extends JpaRepository<TeamMember, Long> {
 
     List<TeamMember> findAllByTeam_Event_IdOrderByIdAsc(Long eventId);
 }
+

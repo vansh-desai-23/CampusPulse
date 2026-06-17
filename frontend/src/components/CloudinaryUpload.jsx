@@ -87,3 +87,4 @@ export default function CloudinaryUpload({ label, onUploadSuccess, currentUrl })
     </div>
   );
 }
+

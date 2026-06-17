@@ -73,3 +73,4 @@ public class FestCreateRequest {
         this.festEndTime = festEndTime;
     }
 }
+

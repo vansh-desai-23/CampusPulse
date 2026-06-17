@@ -4,3 +4,4 @@ public enum FestStatus {
     DRAFT,
     PUBLISHED
 }
+

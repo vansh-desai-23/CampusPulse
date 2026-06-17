@@ -184,3 +184,4 @@ export default function FestCreatePage({ onNavigate }) {
     </div>
   );
 }
+

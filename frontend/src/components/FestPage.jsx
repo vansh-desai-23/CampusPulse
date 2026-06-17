@@ -82,3 +82,4 @@ export default function FestPage({ festId, onNavigate }) {
     </div>
   );
 }
+

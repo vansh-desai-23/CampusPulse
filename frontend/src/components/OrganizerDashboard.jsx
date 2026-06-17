@@ -153,3 +153,4 @@ export default function OrganizerDashboard({ auth, onNavigate, onLogout }) {
     </div>
   );
 }
+

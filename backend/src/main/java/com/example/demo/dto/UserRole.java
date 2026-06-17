@@ -21,3 +21,4 @@ public enum UserRole {
         return name();
     }
 }
+

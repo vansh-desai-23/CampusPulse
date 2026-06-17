@@ -76,3 +76,4 @@ public class AuthService {
         return email.trim().toLowerCase();
     }
 }
+

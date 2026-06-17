@@ -25,3 +25,4 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
     @Query("select t from Team t where t.id = :id")
     Optional<Team> findByIdForUpdate(@Param("id") Long id);
 }
+

@@ -96,3 +96,4 @@ public class EventUpdateRequest {
         this.physicalEventEnd = physicalEventEnd;
     }
 }
+

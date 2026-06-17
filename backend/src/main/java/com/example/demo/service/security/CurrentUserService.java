@@ -40,3 +40,4 @@ public class CurrentUserService {
         return user != null && user.getRole() != null && user.getRole().equalsIgnoreCase(UserRole.ORGANIZER.name());
     }
 }
+

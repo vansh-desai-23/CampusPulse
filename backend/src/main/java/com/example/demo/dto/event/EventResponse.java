@@ -152,3 +152,4 @@ public class EventResponse {
         this.festType = festType;
     }
 }
+

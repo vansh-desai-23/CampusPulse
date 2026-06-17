@@ -6,3 +6,4 @@ public enum FestType {
     SPORT,
     OTHER
 }
+

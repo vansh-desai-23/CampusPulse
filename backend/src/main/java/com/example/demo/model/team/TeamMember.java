@@ -76,3 +76,4 @@ public class TeamMember {
         this.qrToken = qrToken;
     }
 }
+

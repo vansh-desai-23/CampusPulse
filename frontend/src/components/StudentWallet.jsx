@@ -129,3 +129,4 @@ export default function StudentWallet({ auth, onNavigate }) {
     </div>
   );
 }
+

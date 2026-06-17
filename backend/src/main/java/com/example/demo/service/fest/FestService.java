@@ -216,3 +216,4 @@ public class FestService {
     private record LocalDateTimePair(java.time.LocalDateTime start, java.time.LocalDateTime end) {
     }
 }
+

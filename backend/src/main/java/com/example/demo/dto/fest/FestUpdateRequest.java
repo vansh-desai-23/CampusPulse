@@ -71,3 +71,4 @@ public class FestUpdateRequest {
         this.festEndTime = festEndTime;
     }
 }
+

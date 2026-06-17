@@ -84,3 +84,4 @@ public class AdminController {
         return ResponseEntity.ok().body(Map.of("message", "Organizer deregistered successfully"));
     }
 }
+

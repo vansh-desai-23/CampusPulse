@@ -15,3 +15,4 @@ public class JoinTeamRequest {
         this.inviteCode = inviteCode;
     }
 }
+

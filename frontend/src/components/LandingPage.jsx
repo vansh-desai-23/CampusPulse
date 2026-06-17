@@ -64,3 +64,4 @@ export default function LandingPage({ landingBg, onNavigate }) {
     </div>
   );
 }
+

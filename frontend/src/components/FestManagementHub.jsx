@@ -370,3 +370,4 @@ export default function FestManagementHub({ festId, onNavigate }) {
     </div>
   );
 }
+

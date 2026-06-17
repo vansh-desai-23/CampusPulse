@@ -69,3 +69,4 @@ public class FestController {
         return ResponseEntity.ok(festService.publishFest(festId));
     }
 }
+
